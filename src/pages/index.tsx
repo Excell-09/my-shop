@@ -3,7 +3,7 @@ import Layout from '../components/Layout';
 const Home = () => {
   return (
     <Layout>
-      <button className='mt-[200px]'>Senggol dong</button>
+      <button>Senggol dong</button>
     </Layout>
   );
 };

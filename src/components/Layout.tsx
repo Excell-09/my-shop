@@ -20,7 +20,7 @@ const Layout = ({ children }: Props) => {
         <Navbar />
         <MobileNavbar />
       </header>
-      <main>{children}</main>
+      <main className='pt-16'>{children}</main>
       <footer>&copy; My App</footer>
     </>
   );

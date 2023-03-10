@@ -59,7 +59,7 @@ const MobileNavbar = () => {
               exit='closed'
               variants={variants}
               transition={{ duration: 0.3 }}>
-              <div className='bg-gray-800 p-3 min-h-screen space-y-5'>
+              <div className='bg-gray-800 py-3 px-4 min-h-screen space-y-5'>
                 <div>
                   <XCircleIcon
                     className='w-12 h-12 text-white ml-auto'
@@ -77,7 +77,7 @@ const MobileNavbar = () => {
                             router.pathname === href
                               ? 'rounded-full text-opacity-100 bg-black bg-opacity-30'
                               : 'text-opacity-40'
-                          }  py-3 px-5 text-pink-500 transition duration-200 hover:text-opacity-100`}>
+                          }  py-3 text-pink-500 transition duration-200 hover:text-opacity-100 text-center`}>
                           {display}
                         </Link>
                       );
@@ -90,7 +90,7 @@ const MobileNavbar = () => {
                           router.pathname === href
                             ? 'bg-gray-700 rounded-full text-white text-opacity-100'
                             : 'text-opacity-40'
-                        }  hover:bg-gray-600 hover:rounded-full rounded-full   py-3 px-5 text-white transition duration-200  hover:text-opacity-100`}>
+                        }  hover:bg-gray-600 hover:rounded-full rounded-full py-3 text-white transition duration-200  hover:text-opacity-100 text-center`}>
                         {display}
                       </Link>
                     );
@@ -101,7 +101,7 @@ const MobileNavbar = () => {
                       router.pathname === '/register'
                         ? 'bg-indigo-700 rounded-full border-2 border-transparent'
                         : ''
-                    }  hover:bg-indigo-600 hover:rounded-full px-3 py-1 border-indigo-600 border-2 rounded-full transition duration-200 text-white`}>
+                    }  hover:bg-indigo-600 hover:rounded-full py-1 border-indigo-600 border-2 rounded-full transition duration-200 text-white text-center whitespace-nowrap p-1`}>
                     Get Started
                   </Link>
                 </div>
