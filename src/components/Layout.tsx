@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import { ReactNode } from 'react';
 import Navbar from './Navbar';
+import MobileNavbar from './MobileNavbar';
 
 type Props = {
   children: ReactNode;
@@ -15,7 +16,10 @@ const Layout = ({ children }: Props) => {
         <meta name='viewport' content='width=device-width, initial-scale=1' />
         <link rel='icon' href='/favicon.ico' />
       </Head>
-      <Navbar />
+      <header>
+        <Navbar />
+        <MobileNavbar />
+      </header>
       <main>{children}</main>
       <footer>&copy; My App</footer>
     </>

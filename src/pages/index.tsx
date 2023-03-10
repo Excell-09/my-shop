@@ -1,8 +1,11 @@
 import Layout from '../components/Layout';
-import Shop from './shop';
 
 const Home = () => {
-  return <Layout>home</Layout>;
+  return (
+    <Layout>
+      <button className='mt-[200px]'>Senggol dong</button>
+    </Layout>
+  );
 };
 
 export default Home;

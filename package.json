@@ -23,6 +23,7 @@
     "eslint-config-next": "13.2.3",
     "express-rate-limit": "^6.7.0",
     "firebase": "^9.17.2",
+    "framer-motion": "^10.2.3",
     "jsonwebtoken": "^9.0.0",
     "mongodb": "^5.1.0",
     "mongoose": "^7.0.1",
