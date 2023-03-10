@@ -50,7 +50,7 @@ const MobileNavbar = () => {
               transition={{ duration: 0.3 }}
               exit='hidden'
               className='absolute top-0 left-0 w-full bg-black h-screen bg-opacity-50'
-              onClick={() => setIsOpenNav(!isOpenNav)}
+              onClick={() => setIsOpenNav(false)}
             />
             <motion.div
               className='absolute top-0 right-0 w-1/2'
