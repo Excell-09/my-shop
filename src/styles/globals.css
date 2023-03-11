@@ -1,3 +1,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-gray-200 h-full
+  }
+}
+
+@layer components {
+  .section-container {
+    @apply max-w-[77rem] mx-auto
+  }
+
+  .section-container-white {
+    @apply max-w-[77rem] bg-white mx-auto
+  }
+}

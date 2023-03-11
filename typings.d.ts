@@ -9,7 +9,8 @@ export interface IUser extends IUserInput {
 }
 
 export interface IProduct {
+  _id: string;
   title: string;
-  image?: string;
+  imageUrl?: string;
   price: number;
 }
