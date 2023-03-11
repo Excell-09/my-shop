@@ -1,7 +1,7 @@
 import Layout from '@/components/Layout';
 
-const whishlist = () => {
+const Whishlist = () => {
   return <Layout>checout</Layout>;
 };
 
-export default whishlist;
+export default Whishlist;

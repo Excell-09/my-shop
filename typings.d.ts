@@ -14,3 +14,8 @@ export interface IProduct {
   imageUrl?: string;
   price: number;
 }
+export interface Register {
+  name: string;
+  email: string;
+  password: string;
+}

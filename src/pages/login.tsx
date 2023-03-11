@@ -1,7 +1,15 @@
 import Layout from '@/components/Layout';
 
-const login = () => {
-  return <Layout>login</Layout>;
+const Login = () => {
+  return (
+    <Layout>
+      <section className='min-h-screen'>
+        <div>
+          <h2>Login</h2>
+        </div>
+      </section>
+    </Layout>
+  );
 };
 
-export default login;
+export default Login;

@@ -1,8 +1,4 @@
-import axios from 'axios';
-
-const axiosFetch = axios.create({
-  baseURL: process.env.HOST + '/api',
-});
+import axiosFetch from './axiosCreate';
 
 const axiosGet = async <T>(endpoint: string): Promise<T> => {
   const { data } = await axiosFetch(endpoint);
