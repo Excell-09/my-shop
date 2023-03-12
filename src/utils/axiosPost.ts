@@ -1,12 +1,10 @@
 import { Register } from '../../typings';
 import axiosFetch from './axiosCreate';
 
-const axiosPost = async (endpoint: string, { name, password, email }: Register) => {
-  const response = await axiosFetch.post(endpoint, {
-    name,
-    password,
-    email,
-  });
+interface Data {}
+
+const axiosPost = async <T>(endpoint: string, data: T) => {
+  const response = await axiosFetch.post(endpoint, data);
   return response;
 };
 

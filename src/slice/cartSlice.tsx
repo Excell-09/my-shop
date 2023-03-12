@@ -45,7 +45,7 @@ export const cartSlice = createSlice({
       const newItem = action.payload.item;
       const exitsItem = state.cartItems.find((item) => item._id === newItem._id);
 
-      state.totalItems++;
+      ++state.totalItems;
       if (!exitsItem) {
         state.cartItems.push({
           _id: newItem._id,
@@ -56,7 +56,6 @@ export const cartSlice = createSlice({
         });
       } else {
         exitsItem.quantity++;
-        exitsItem.price = Number(exitsItem.price) + Number(exitsItem.price);
       }
 
       state.total = state.cartItems.reduce(
@@ -66,8 +65,14 @@ export const cartSlice = createSlice({
     },
     removeItem: (state: CartItem, action: ActionRemove) => {
       const findItem = state.cartItems.findIndex((item) => item._id === action.payload._id);
-      if (state.cartItems.length > -1) {
+      if (findItem > -1) {
+        const removedItem = state.cartItems[findItem];
         state.cartItems.splice(findItem, 1);
+        state.totalItems = state.totalItems - removedItem.quantity;
+        state.total = state.cartItems.reduce(
+          (total, item) => total + Number(item.price) * Number(item.quantity),
+          0
+        );
       } else {
         console.warn('cant to remove, cause no item in here');
       }
@@ -75,11 +80,21 @@ export const cartSlice = createSlice({
     incrementQuantity: (state: CartItem, action: ActionIncrement) => {
       const findItem = state.cartItems.findIndex((item) => item._id === action.payload._id);
       ++state.cartItems[findItem].quantity;
+      state.totalItems = state.totalItems + 1;
+      state.total = state.cartItems.reduce(
+        (total, item) => total + Number(item.price) * Number(item.quantity),
+        0
+      );
     },
     decrementQuantity: (state: CartItem, action: ActionDecrement) => {
       const findItem = state.cartItems.findIndex((item) => item._id === action.payload._id);
       if (state.cartItems[findItem].quantity > 1) {
         --state.cartItems[findItem].quantity;
+        state.totalItems = state.totalItems - 1;
+        state.total = state.cartItems.reduce(
+          (total, item) => total + Number(item.price) * Number(item.quantity),
+          0
+        );
       } else {
         alert('Quantity Minimum is 1');
       }

@@ -1,3 +1,4 @@
+import alertSlice from '@/slice/alertSlice';
 import cartSlice from '@/slice/cartSlice';
 import loadingSlice from '@/slice/loadingSlice';
 import { configureStore } from '@reduxjs/toolkit';
@@ -6,6 +7,7 @@ const store = configureStore({
   reducer: {
     cart: cartSlice,
     loading: loadingSlice,
+    alert: alertSlice,
   },
 });
 

@@ -1,7 +1,7 @@
 import Layout from '@/components/Layout';
 
 const Whishlist = () => {
-  return <Layout>checout</Layout>;
+  return <Layout>wishlist</Layout>;
 };
 
 export default Whishlist;

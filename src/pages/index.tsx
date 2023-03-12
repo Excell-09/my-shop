@@ -18,7 +18,6 @@ interface Props {
 const Home = (props: Props) => {
   let [products] = useState<IProduct[]>(props.data);
   const [banner] = useState<StaticImageData[]>(props.banner);
-  
 
   return (
     <Layout>
@@ -75,7 +74,7 @@ const Home = (props: Props) => {
 };
 
 export async function getServerSideProps() {
-  const data = await axiosGet<IProduct[]>('/product/product');
+  const data = await axiosGet<IProduct[]>('/product');
   const banner: [StaticImageData, StaticImageData, StaticImageData] = [banner1, banner2, banner3];
   return {
     props: { data, banner }, // will be passed to the page component as props

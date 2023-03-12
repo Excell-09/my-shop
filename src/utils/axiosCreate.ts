@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const axiosFetch = axios.create({
-  baseURL: process.env.HOST + '/api',
+  baseURL: 'http://localhost:5000/api/v1',
 });
 
 export default axiosFetch;

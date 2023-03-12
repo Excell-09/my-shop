@@ -80,7 +80,7 @@ export default function Navbar() {
               </div>
             </div>
             <div className='relative cursor-pointer' onClick={() => router.push('/checkout')}>
-              <small className='absolute top-0 -right-1 bg-pink-300 rounded-full w-5 h-5 text-white font-black flex justify-center items-center'>
+              <small className='absolute top-0 -right-1 bg-pink-300 rounded-full w-5 h-5 text-pink-600 font-bold flex justify-center items-center'>
                 {totalLengthItem}
               </small>
               <ShoppingCartIcon className='w-9 h-9 text-pink-500' />
