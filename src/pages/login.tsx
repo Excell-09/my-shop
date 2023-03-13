@@ -4,8 +4,10 @@ import Input from '@/components/Input';
 import Layout from '@/components/Layout';
 import { clearAlert, setAlert } from '@/slice/alertSlice';
 import { setLoading } from '@/slice/loadingSlice';
+import { setUser } from '@/slice/userSlice';
 import axiosPost from '@/utils/axiosPost';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { Login } from '../../typings';
 
@@ -18,6 +20,7 @@ const Login = () => {
   const [values, setValues] = useState<Login>(initialValue);
   const dispatch = useAppDispatch();
   const loading = useAppSelector((state) => state.loading.loading);
+  const router = useRouter();
 
   const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
     setValues({ ...values, [e.target.name]: e.target.value });
@@ -40,9 +43,15 @@ const Login = () => {
 
     try {
       dispatch(setLoading({ loading: true }));
-      await axiosPost<Login>('/auth/login', values);
+      const { data } = await axiosPost<Login>('/auth/login', values);
+      const { user } = data;
       dispatch(setAlert({ text: 'Login Success, Redirect...', status: 'sucess' }));
       handleClear();
+      setTimeout(() => {
+        // router.push('/login');
+        dispatch(clearAlert({}));
+      }, 1000 as number);
+      dispatch(setUser({ user }));
     } catch (error: any) {
       if (error.response.status === 429) {
         dispatch(setAlert({ text: (error.response.statusText + '!') as string, status: 'error' }));
@@ -52,6 +61,9 @@ const Login = () => {
     }
     dispatch(setLoading({ loading: false }));
   };
+
+  const me = useAppSelector((state) => state.user.user);
+  console.log(me);
 
   return (
     <Layout>

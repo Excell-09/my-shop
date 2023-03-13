@@ -4,7 +4,9 @@ import Image from 'next/image';
 import Logo from './../assets/android-chrome-512x512.png';
 import { useRouter } from 'next/router';
 import { ShoppingCartIcon } from '@heroicons/react/24/outline';
-import { useAppSelector } from '@/app/hooks';
+import { useAppDispatch, useAppSelector } from '@/app/hooks';
+import logoutUser from '@/utils/logoutUser';
+import { clearUser } from '@/slice/userSlice';
 
 interface INavigation {
   display: string;
@@ -19,6 +21,10 @@ const navigation: INavigation[] = [
 export default function Navbar() {
   const router = useRouter();
   const totalLengthItem = useAppSelector((state) => state.cart.totalItems);
+
+  const user = useAppSelector((state) => state.user.user);
+
+  const dispatch = useAppDispatch();
 
   return (
     <Disclosure as='nav' className='bg-gray-800 hidden sm:block fixed top-0 left-0 w-full z-50'>
@@ -68,15 +74,27 @@ export default function Navbar() {
                     </Link>
                   );
                 })}
-                <Link
-                  href={'/register'}
-                  className={`${
-                    router.pathname === '/register'
-                      ? 'bg-indigo-700 rounded-full border-2 border-transparent'
-                      : ''
-                  }  hover:bg-indigo-600 hover:rounded-full px-3 py-1 border-indigo-600 border-2 rounded-full transition duration-200 text-white`}>
-                  Get Started
-                </Link>
+                {user ? (
+                  <button
+                    type='button'
+                    className='bg-red-500 px-3 py-1 rounded-full hover:rounded-full hover:bg-red-400 text-white'
+                    onClick={() => {
+                      logoutUser();
+                      dispatch(clearUser({}));
+                    }}>
+                    Logout
+                  </button>
+                ) : (
+                  <Link
+                    href={'/register'}
+                    className={`${
+                      router.pathname === '/register'
+                        ? 'bg-indigo-700 rounded-full border-2 border-transparent'
+                        : ''
+                    }  hover:bg-indigo-600 hover:rounded-full px-3 py-1 border-indigo-600 border-2 rounded-full transition duration-200 text-white`}>
+                    Get Started
+                  </Link>
+                )}
               </div>
             </div>
             <div className='relative cursor-pointer' onClick={() => router.push('/checkout')}>

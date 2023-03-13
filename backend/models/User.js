@@ -26,14 +26,18 @@ const UserSchema = new mongoose.Schema({
     minlength: 6,
     select: false,
   },
-  historyProduct: {
-    type: [mongoose.Schema.Types.ObjectId],
-    default: [],
-  },
-  wishlistProduct: {
-    type: [mongoose.Schema.Types.ObjectId],
-    default: [],
-  },
+  historyProduct: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'products',
+    },
+  ],
+  wishlistProduct: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'products',
+    },
+  ],
 });
 
 UserSchema.pre('save', async function () {

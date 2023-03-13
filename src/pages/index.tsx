@@ -9,16 +9,18 @@ import banner2 from '../assets/banner-2.png';
 import banner3 from '../assets/banner-3.jpeg';
 import Image, { StaticImageData } from 'next/image';
 import CartProduct from '@/components/CartProduct';
+import { GetStaticProps } from 'next';
+import { setCache, getCache } from '@/utils/cache';
+import { useAppDispatch } from '@/app/hooks';
 
 interface Props {
-  data: IProduct[];
-  banner: StaticImageData[];
+  products: IProduct[];
+  productsWishlistId: string[];
 }
 
 const Home = (props: Props) => {
-  let [products] = useState<IProduct[]>(props.data);
-  const [banner] = useState<StaticImageData[]>(props.banner);
-
+  let [products] = useState<IProduct[]>(props.products);
+  let [productsIdWislist] = useState<string[]>(props.productsWishlistId);
   return (
     <Layout>
       <section>
@@ -32,13 +34,9 @@ const Home = (props: Props) => {
               showIndicators={true}
               showThumbs={false}
               interval={5000}>
-              {banner.map((item: StaticImageData, i: number) => {
-                return (
-                  <div key={i}>
-                    <Image loading='lazy' src={item} alt='banner' />
-                  </div>
-                );
-              })}
+              <Image loading='lazy' src={banner1} alt='banner' />
+              <Image loading='lazy' src={banner2} alt='banner' />
+              <Image loading='lazy' src={banner3} alt='banner' />
             </Carousel>
           </div>
           <div className='col-span-1 md:block space-y-1 hidden'>
@@ -59,6 +57,7 @@ const Home = (props: Props) => {
             {products.map((item: IProduct, i: number) => (
               <div key={i} className='bg-white flex justify-center items-center'>
                 <CartProduct
+                  productIdWislist={productsIdWislist}
                   _id={item._id}
                   title={item.title}
                   imageUrl={item.imageUrl}
@@ -73,12 +72,26 @@ const Home = (props: Props) => {
   );
 };
 
-export async function getServerSideProps() {
-  const data = await axiosGet<IProduct[]>('/product');
-  const banner: [StaticImageData, StaticImageData, StaticImageData] = [banner1, banner2, banner3];
+export const getStaticProps: GetStaticProps = async () => {
+  const cacheKey = 'homePageData';
+  let cachedData = getCache<Props>(cacheKey);
+
+  if (cachedData) {
+    return {
+      props: cachedData,
+      revalidate: 60,
+    };
+  }
+
+  const products = await axiosGet<IProduct[]>('/product');
+  const productsWishlist = await axiosGet<IProduct[]>('/product/wishlist/640df5500a283af202e92ed6');
+  const productsWishlistId = productsWishlist.map((item) => item._id);
+  const props = { products, productsWishlistId };
+  setCache(cacheKey, props);
   return {
-    props: { data, banner }, // will be passed to the page component as props
+    props,
+    revalidate: 20,
   };
-}
+};
 
 export default Home;

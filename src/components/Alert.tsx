@@ -12,7 +12,7 @@ const Alert = () => {
     <>
       {alertText && (
         <div
-          className={`h-10 w-full border-2 bg-opacity-30 font-semibold ${ALERTCOLOR[alertStatus]} rounded-md flex justify-center items-center`}>
+          className={`p-2 w-full border-2 bg-opacity-30 font-semibold ${ALERTCOLOR[alertStatus]} rounded-md flex justify-center items-center`}>
           {alertText}
         </div>
       )}

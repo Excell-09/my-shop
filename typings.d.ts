@@ -1,11 +1,12 @@
 export interface IUserInput {
+  _id?: string;
   name?: string;
-  email: string;
-  password: string;
+  email?: string;
+  password?: string;
 }
 export interface IUser extends IUserInput {
-  historyProduct: IProduct[];
-  wishlistProduct: IProduct[];
+  historyProduct?: IProduct[];
+  wishlistProduct?: IProduct[];
 }
 
 export interface IProduct {
@@ -23,4 +24,3 @@ export interface Login {
   email: string;
   password: string;
 }
-

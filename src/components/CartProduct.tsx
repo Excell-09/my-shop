@@ -2,13 +2,18 @@ import React from 'react';
 import { IProduct } from '../../typings';
 import { useDispatch } from 'react-redux';
 import { addToCart } from '@/slice/cartSlice';
+import WishlistButton from './WishlistButton';
 
-const CartProduct = ({ _id, title, imageUrl, price }: IProduct) => {
+interface Props extends IProduct {
+  productIdWislist: string[] | string;
+}
+
+const CartProduct = ({ productIdWislist, _id, title, imageUrl, price }: Props) => {
   let formattedPrice = price.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' });
   formattedPrice = formattedPrice.slice(0, -3);
   const dispatch = useDispatch();
   return (
-    <div className='w-full flex flex-col items-center justify-center md:p-2 p-1 gap-3'>
+    <div className='w-full flex flex-col items-center justify-center md:p-3 p-1 py-3 gap-3 relative'>
       <div>
         <img src={imageUrl} alt='product' className='object-contain w-[100px] h-[100px]' />
       </div>
@@ -19,6 +24,9 @@ const CartProduct = ({ _id, title, imageUrl, price }: IProduct) => {
         onClick={() => dispatch(addToCart({ item: { title, imageUrl, price, _id } }))}>
         Add to cart
       </button>
+      <div className='absolute top-1 right-1'>
+        <WishlistButton _id={_id} IdProducts={productIdWislist} />
+      </div>
     </div>
   );
 };

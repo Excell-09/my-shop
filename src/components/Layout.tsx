@@ -1,13 +1,44 @@
 import Head from 'next/head';
-import { ReactNode } from 'react';
+import { ReactNode, useEffect } from 'react';
 import Navbar from './Navbar';
 import MobileNavbar from './MobileNavbar';
+import axiosFetch from '@/utils/axiosCreate';
+import logoutUser from '@/utils/logoutUser';
+import { useAppDispatch } from '@/app/hooks';
+import { IUser } from '../../typings';
+import userSlice, { setUser } from '@/slice/userSlice';
 
 type Props = {
   children: ReactNode;
 };
 
 const Layout = ({ children }: Props) => {
+  const dispatch = useAppDispatch();
+  const getCurrentUser = async () => {
+    try {
+      const user = await axiosFetch<IUser>('/auth/getCurrentUser');
+      console.log(user);
+    } catch (error: any) {
+      if (error.response.status === 401) return;
+      logoutUser();
+    }
+  };
+
+  useEffect(() => {
+    axiosFetch.interceptors.response.use(
+      (response) => {
+        return response;
+      },
+      (error) => {
+        if (error.response.status === 401) {
+          logoutUser();
+        }
+        return Promise.reject(error);
+      }
+    );
+    getCurrentUser();
+  }, []);
+
   return (
     <>
       <Head>

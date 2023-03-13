@@ -7,7 +7,9 @@ import { ShoppingCartIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useAppSelector } from '@/app/hooks';
+import { useAppDispatch, useAppSelector } from '@/app/hooks';
+import logoutUser from '@/utils/logoutUser';
+import { clearUser } from '@/slice/userSlice';
 
 interface INavigation {
   display: string;
@@ -28,6 +30,8 @@ const MobileNavbar = () => {
   };
 
   const totalLengthItem = useAppSelector((state) => state.cart.totalItems);
+  const user = useAppSelector((state) => state.user.user);
+  const dispatch = useAppDispatch();
 
   return (
     <nav className='fixed top-0 left-0 w-full sm:hidden z-50'>
@@ -88,7 +92,7 @@ const MobileNavbar = () => {
                               router.pathname === href
                                 ? 'rounded-full text-opacity-100 bg-black bg-opacity-30'
                                 : 'text-opacity-40'
-                            }  py-3 text-pink-500 transition duration-200 hover:text-opacity-100 text-center`}>
+                            }  py-2 text-pink-500 transition duration-200 hover:text-opacity-100 text-center`}>
                             {display}
                           </Link>
                         );
@@ -101,20 +105,32 @@ const MobileNavbar = () => {
                             router.pathname === href
                               ? 'bg-gray-700 rounded-full text-white text-opacity-100'
                               : 'text-opacity-40'
-                          }  hover:bg-gray-600 hover:rounded-full rounded-full py-3 text-white transition duration-200  hover:text-opacity-100 text-center`}>
+                          }  hover:bg-gray-600 hover:rounded-full rounded-full py-2 text-white transition duration-200  hover:text-opacity-100 text-center`}>
                           {display}
                         </Link>
                       );
                     })}
-                    <Link
-                      href={'/register'}
-                      className={`${
-                        router.pathname === '/register'
-                          ? 'bg-indigo-700 rounded-full border-2 border-transparent'
-                          : ''
-                      }  hover:bg-indigo-600 hover:rounded-full py-1 border-indigo-600 border-2 rounded-full transition duration-200 text-white text-center whitespace-nowrap p-1`}>
-                      Get Started
-                    </Link>
+                    {user ? (
+                      <button
+                        type='button'
+                        className='bg-red-500 px-3 py-1 rounded-full hover:rounded-full hover:bg-red-400 text-white'
+                        onClick={() => {
+                          logoutUser();
+                          dispatch(clearUser({}));
+                        }}>
+                        Logout
+                      </button>
+                    ) : (
+                      <Link
+                        href={'/register'}
+                        className={`${
+                          router.pathname === '/register'
+                            ? 'bg-indigo-700 rounded-full border-2 border-transparent'
+                            : ''
+                        }  hover:bg-indigo-600 hover:rounded-full py-1 border-indigo-600 border-2 rounded-full transition duration-200 text-white text-center whitespace-nowrap p-1`}>
+                        Get Started
+                      </Link>
+                    )}
                   </div>
                 </div>
               </motion.div>
