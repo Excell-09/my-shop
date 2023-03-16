@@ -79,7 +79,7 @@ export default function Navbar() {
                     type='button'
                     className='bg-red-500 px-3 py-1 rounded-full hover:rounded-full hover:bg-red-400 text-white'
                     onClick={() => {
-                      logoutUser();
+                      // logoutUser();
                       dispatch(clearUser({}));
                     }}>
                     Logout

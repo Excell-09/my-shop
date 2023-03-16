@@ -1,6 +1,6 @@
 import axiosGet from '@/utils/axiosGet';
-import { useState } from 'react';
-import { IProduct } from '../../typings';
+import { useEffect, useState } from 'react';
+import { IProduct, IUser } from '../../typings';
 import Layout from '../components/Layout';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { Carousel } from 'react-responsive-carousel';
@@ -11,15 +11,36 @@ import Image from 'next/image';
 import CartProduct from '@/components/CartProduct';
 import { GetStaticProps } from 'next';
 import { setCache, getCache } from '@/utils/cache';
+import { useAppSelector } from '@/app/hooks';
 
 interface Props {
   products: IProduct[];
-  productsWishlistId: string[];
 }
 
 const Home = (props: Props) => {
+  const user = useAppSelector<IUser | null>((state) => state.user.user);
   let [products] = useState<IProduct[]>(props.products);
-  let [productsIdWislist] = useState<string[]>(props.productsWishlistId);
+
+  let [productsIdWislist, setProductsIdWislist] = useState<string[]>([]);
+
+  const getProductWishlist = async (userId: string): Promise<string[]> => {
+    if (!userId) {
+      return ['You Need To Login!'];
+    }
+    const productsWishlist = await axiosGet<IProduct[] | string>(`/product/wishlist/${userId}`);
+    let productsWishlistId;
+    if (typeof productsWishlist === 'string') {
+      return (productsWishlistId = [productsWishlist]);
+    } else {
+      return (productsWishlistId = productsWishlist.map((item) => item._id));
+    }
+  };
+
+  useEffect(() => {
+    getProductWishlist(user?._id as string).then((result) => setProductsIdWislist(result));
+  }, [user]);
+
+
   return (
     <Layout>
       <section>
@@ -83,14 +104,8 @@ export const getStaticProps: GetStaticProps = async () => {
   }
 
   const products = await axiosGet<IProduct[]>('/product');
-  const productsWishlist = await axiosGet<IProduct[]>('/product/wishlist/640ecd5c67e4d169310e33d6');
-  let productsWishlistId;
-  if (typeof productsWishlist === 'string') {
-    productsWishlistId = [productsWishlist];
-  } else {
-    productsWishlistId = productsWishlist.map((item) => item._id);
-  }
-  const props = { products, productsWishlistId };
+
+  const props = { products };
   setCache(cacheKey, props);
   return {
     props,

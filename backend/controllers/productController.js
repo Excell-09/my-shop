@@ -28,31 +28,6 @@ const getProductsWishlist = async (req, res) => {
   res.status(StatusCodes.OK).json(products);
 };
 
-const deleteProductWishlist = async (req, res) => {
-  const userId = req.params.id;
-  const { id: productId } = req.body;
-
-  const user = await User.findById(userId);
-  if (!user) {
-    throw new UnAuthenticatedError('Invalid User');
-  }
-
-  const product = await ProductModels.findOne({ _id: productId });
-  if (!product) {
-    throw new NotFoundError('Product Not Found!');
-  }
-
-  const isProductWishlist = await user.wishlistProduct.includes(productId);
-
-  if (!isProductWishlist) {
-    throw new NotFoundError("you don't have product in your wishlist!");
-  }
-
-  const indexProduct = user.wishlistProduct.indexOf(productId);
-  user.wishlistProduct.splice(indexProduct, 1);
-  await user.save();
-  res.status(StatusCodes.CREATED).json('Product Deleted from wishlist!');
-};
 const setProductsWishlist = async (req, res) => {
   const userId = req.params.id;
   const { id: productId } = req.body;
@@ -70,12 +45,14 @@ const setProductsWishlist = async (req, res) => {
   const isProductWishlist = await user.wishlistProduct.includes(productId);
 
   if (isProductWishlist) {
-    throw new NotFoundError('Product Already in List!');
+    const index = await user.wishlistProduct.indexOf(productId);
+    user.wishlistProduct.splice(index, 1);
+  } else {
+    user.wishlistProduct.unshift(product._id);
   }
 
-  user.wishlistProduct.unshift(product._id);
   await user.save();
-  res.status(StatusCodes.CREATED).json('Wistlist!');
+  res.status(StatusCodes.CREATED).json('Wistlist updated!');
 };
 
-export { getProducts, getProductsWishlist, setProductsWishlist, deleteProductWishlist };
+export { getProducts, getProductsWishlist, setProductsWishlist };

@@ -2,8 +2,8 @@ import React from 'react';
 
 const Loading = () => {
   return (
-    <div className='bg-indigo-500 '>
-      <svg className='animate-spin h-5 w-5 mr-3 ...' viewBox='0 0 24 24'></svg>
+    <div className='h-full w-full'>
+      <div className='animate-spin min-h-full min-w-full border-[5px] border-transparent border-t-indigo-500 rounded-full border-l-indigo-500' />
     </div>
   );
 };

@@ -48,7 +48,7 @@ const Login = () => {
       dispatch(setAlert({ text: 'Login Success, Redirect...', status: 'sucess' }));
       handleClear();
       setTimeout(() => {
-        // router.push('/login');
+        router.push('/');
         dispatch(clearAlert({}));
       }, 1000 as number);
       dispatch(setUser({ user }));
@@ -63,7 +63,6 @@ const Login = () => {
   };
 
   const me = useAppSelector((state) => state.user.user);
-  console.log(me);
 
   return (
     <Layout>
