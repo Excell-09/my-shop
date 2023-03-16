@@ -6,6 +6,7 @@ import { clearAlert, setAlert } from '@/slice/alertSlice';
 import { setLoading } from '@/slice/loadingSlice';
 import { setUser } from '@/slice/userSlice';
 import axiosPost from '@/utils/axiosPost';
+import setCookie from '@/utils/setCookie';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { ChangeEvent, FormEvent, useState } from 'react';
@@ -44,6 +45,7 @@ const Login = () => {
     try {
       dispatch(setLoading({ loading: true }));
       const { data } = await axiosPost<Login>('/auth/login', values);
+      setCookie('token', data.token);
       const { user } = data;
       dispatch(setAlert({ text: 'Login Success, Redirect...', status: 'sucess' }));
       handleClear();

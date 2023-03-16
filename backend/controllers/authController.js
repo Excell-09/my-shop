@@ -20,12 +20,9 @@ const register = async (req, res) => {
   res.status(StatusCodes.CREATED).json({
     user: {
       email: user.email,
-      lastName: user.lastName,
-      location: user.location,
       name: user.name,
     },
-
-    location: user.location,
+    token,
   });
 };
 
@@ -47,7 +44,7 @@ const login = async (req, res) => {
   attachCookie({ res, token });
   user.password = undefined;
 
-  res.status(StatusCodes.OK).json({ user, location: user.location });
+  res.status(StatusCodes.OK).json({ user, token });
 };
 
 const getCurrentUser = async (req, res) => {

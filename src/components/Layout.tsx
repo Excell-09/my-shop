@@ -16,8 +16,7 @@ const Layout = ({ children }: Props) => {
   const dispatch = useAppDispatch();
   const getCurrentUser = async () => {
     try {
-      const user = await axiosFetch<IUser>('/auth/getCurrentUser');
-      console.log(user);
+      const user = await axiosFetch<IUser>('/auth/getCurrentUser', { withCredentials: true });
     } catch (error: any) {
       if (error.response.status === 401) return;
       logoutUser();
