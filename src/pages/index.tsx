@@ -7,11 +7,10 @@ import { Carousel } from 'react-responsive-carousel';
 import banner1 from '../assets/banner-1.jpeg';
 import banner2 from '../assets/banner-2.png';
 import banner3 from '../assets/banner-3.jpeg';
-import Image, { StaticImageData } from 'next/image';
+import Image from 'next/image';
 import CartProduct from '@/components/CartProduct';
 import { GetStaticProps } from 'next';
 import { setCache, getCache } from '@/utils/cache';
-import { useAppDispatch } from '@/app/hooks';
 
 interface Props {
   products: IProduct[];
@@ -84,8 +83,13 @@ export const getStaticProps: GetStaticProps = async () => {
   }
 
   const products = await axiosGet<IProduct[]>('/product');
-  const productsWishlist = await axiosGet<IProduct[]>('/product/wishlist/640df5500a283af202e92ed6');
-  const productsWishlistId = productsWishlist.map((item) => item._id);
+  const productsWishlist = await axiosGet<IProduct[]>('/product/wishlist/640ecd5c67e4d169310e33d6');
+  let productsWishlistId;
+  if (typeof productsWishlist === 'string') {
+    productsWishlistId = [productsWishlist];
+  } else {
+    productsWishlistId = productsWishlist.map((item) => item._id);
+  }
   const props = { products, productsWishlistId };
   setCache(cacheKey, props);
   return {

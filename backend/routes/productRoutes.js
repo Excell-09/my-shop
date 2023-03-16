@@ -3,12 +3,16 @@ import {
   getProducts,
   getProductsWishlist,
   setProductsWishlist,
+  deleteProductWishlist,
 } from '../controllers/productController.js';
-import authenticateUser from '../middleware/auth.js';
 
 const router = express.Router();
 
 router.route('/').get(getProducts);
-router.route('/wishlist/:id').get(getProductsWishlist).post(setProductsWishlist);
+router
+  .route('/wishlist/:id')
+  .get(getProductsWishlist)
+  .post(setProductsWishlist)
+  .delete(deleteProductWishlist);
 
 export default router;
