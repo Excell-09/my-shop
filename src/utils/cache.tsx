@@ -9,3 +9,7 @@ export function setCache(key: string, value: any, ttl: number = 60): void {
 export function getCache<T>(key: string): T | undefined {
   return cache.get(key) as T | undefined;
 }
+
+export function deleteCache(key: string): number {
+  return cache.del(key);
+}

@@ -22,7 +22,6 @@ const register = async (req, res) => {
       email: user.email,
       name: user.name,
     },
-    token,
   });
 };
 

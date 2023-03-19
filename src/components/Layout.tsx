@@ -1,42 +1,64 @@
 import Head from 'next/head';
-import { ReactNode, useEffect } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import Navbar from './Navbar';
 import MobileNavbar from './MobileNavbar';
 import axiosFetch from '@/utils/axiosCreate';
 import logoutUser from '@/utils/logoutUser';
-import { useAppDispatch } from '@/app/hooks';
-import { IUser } from '../../typings';
-import userSlice, { setUser } from '@/slice/userSlice';
+import { useAppDispatch, useAppSelector } from '@/app/hooks';
+import { setUser } from '@/slice/userSlice';
+import { useRouter } from 'next/router';
+import LoadingBig from './LoadingBig';
+import { getCache, setCache } from '@/utils/cache';
 
 type Props = {
   children: ReactNode;
 };
 
 const Layout = ({ children }: Props) => {
+  const router = useRouter();
   const dispatch = useAppDispatch();
+  const [loading, isLoading] = useState(true);
+  const cacheKey = 'userCacheKey';
   const getCurrentUser = async () => {
+    isLoading(true);
     try {
-      const user = await axiosFetch<IUser>('/auth/getCurrentUser', { withCredentials: true });
+      const { data } = await axiosFetch('/auth/getCurrentUser', { withCredentials: true });
+      const { user } = data;
+      dispatch(setUser({ user }));
+      if (router.pathname === '/login' || router.pathname === '/register') {
+        router.push('/');
+      }
+      setCache(cacheKey, user);
     } catch (error: any) {
-      if (error.response.status === 401) return;
+      if (error?.response?.status === 401) {
+        isLoading(false);
+        return;
+      }
       logoutUser();
     }
+    isLoading(false);
   };
 
   useEffect(() => {
-    axiosFetch.interceptors.response.use(
-      (response) => {
-        return response;
-      },
-      (error) => {
-        if (error.response.status === 401) {
-          logoutUser();
-        }
-        return Promise.reject(error);
-      }
-    );
+    const cachedData = getCache(cacheKey);
+    if (cachedData) {
+      isLoading(false);
+      return;
+    }
     getCurrentUser();
   }, []);
+
+  axiosFetch.interceptors.response.use(
+    (response) => {
+      return response;
+    },
+    (error) => {
+      if (error.response.status === 401) {
+        logoutUser();
+      }
+      return Promise.reject(error);
+    }
+  );
 
   return (
     <>
@@ -50,7 +72,7 @@ const Layout = ({ children }: Props) => {
         <Navbar />
         <MobileNavbar />
       </header>
-      <main className='pt-16'>{children}</main>
+      <main className='pt-16'>{loading ? <LoadingBig /> : children}</main>
       <footer>&copy; My App</footer>
     </>
   );
