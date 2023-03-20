@@ -32,7 +32,12 @@ const setProductsWishlist = async (req, res) => {
   const userId = req.params.id;
   const { id: productId } = req.body;
 
+  if (userId === 'undefined') {
+    throw new NotFoundError('you need to login');
+  }
+
   const user = await User.findById(userId);
+
   if (!user) {
     throw new UnAuthenticatedError('Invalid User');
   }

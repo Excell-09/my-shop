@@ -22,6 +22,7 @@ const WishlistButton = (props: Props) => {
   const handleWishlist = async () => {
     if (!user) {
       alert('Login To add your product wishlist');
+      return;
     }
 
     try {
@@ -32,7 +33,11 @@ const WishlistButton = (props: Props) => {
       await axiosPost<Data>(`/product/wishlist/${user?._id}`, {
         id: props._id,
       });
-    } catch (error) {
+    } catch (error: any) {
+      if (error.response.data.msg === 'you need to login') {
+        alert(error.response.data.msg);
+        return;
+      }
       if (props.IdProducts) {
         const index = props.IdProducts.indexOf(props._id);
         if (index !== -1) {

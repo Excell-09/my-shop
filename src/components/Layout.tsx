@@ -5,7 +5,7 @@ import MobileNavbar from './MobileNavbar';
 import axiosFetch from '@/utils/axiosCreate';
 import logoutUser from '@/utils/logoutUser';
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
-import { setUser } from '@/slice/userSlice';
+import { clearUser, setUser } from '@/slice/userSlice';
 import { useRouter } from 'next/router';
 import LoadingBig from './LoadingBig';
 import { getCache, setCache } from '@/utils/cache';
@@ -30,11 +30,7 @@ const Layout = ({ children }: Props) => {
       }
       setCache(cacheKey, user);
     } catch (error: any) {
-      if (error?.response?.status === 401) {
-        isLoading(false);
-        return;
-      }
-      logoutUser();
+      if (error?.response?.status === 401) return;
     }
     isLoading(false);
   };
@@ -53,8 +49,10 @@ const Layout = ({ children }: Props) => {
       return response;
     },
     (error) => {
-      if (error.response.status === 401) {
+      if (error?.response?.status === 401) {
+        dispatch(clearUser({}));
         logoutUser();
+        return;
       }
       return Promise.reject(error);
     }

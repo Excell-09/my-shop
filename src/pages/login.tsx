@@ -55,10 +55,11 @@ const Login = () => {
       }, 1000 as number);
       dispatch(setUser({ user }));
     } catch (error: any) {
-      if (error.response.status === 429) {
-        dispatch(setAlert({ text: (error.response.statusText + '!') as string, status: 'error' }));
+      console.log(error)
+      if (error?.response?.status === 429) {
+        dispatch(setAlert({ text: (error?.response?.statusText + '!') as string, status: 'error' }));
       } else {
-        dispatch(setAlert({ text: error.response.data.msg as string, status: 'error' }));
+        dispatch(setAlert({ text: error?.response?.data.msg as string, status: 'error' }));
       }
     }
     dispatch(setLoading({ loading: false }));
