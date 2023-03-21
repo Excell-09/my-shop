@@ -5,7 +5,7 @@ import { addToCart } from '@/slice/cartSlice';
 import WishlistButton from './WishlistButton';
 
 interface Props extends IProduct {
-  productIdWislist: string[] | string;
+  productIdWislist: string[] ;
 }
 
 const CartProduct = ({ productIdWislist, _id, title, imageUrl, price }: Props) => {
