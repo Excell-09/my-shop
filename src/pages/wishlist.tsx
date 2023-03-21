@@ -10,7 +10,6 @@ const Whishlist = () => {
   const user = useAppSelector<IUser | null>((state) => state.user.user);
   const [props, setProps] = useState<IProduct[] | string>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const [wishlistId, setWishlistId] = useState([]);
 
   const getProductWishlist = async (userId: string): Promise<IProduct[] | string> => {
     if (!userId) {
