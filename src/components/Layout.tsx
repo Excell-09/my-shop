@@ -9,6 +9,7 @@ import { clearUser, setUser } from '@/slice/userSlice';
 import { useRouter } from 'next/router';
 import LoadingBig from './LoadingBig';
 import { getCache, setCache } from '@/utils/cache';
+import getCookie from '@/utils/getCookie';
 
 type Props = {
   children: ReactNode;
@@ -19,21 +20,30 @@ const Layout = ({ children }: Props) => {
   const dispatch = useAppDispatch();
   const [loading, isLoading] = useState(true);
   const cacheKey = 'userCacheKey';
+
   const getCurrentUser = async () => {
     isLoading(true);
+    const cookie = getCookie('token');
+    if (cookie && (router.pathname === '/login' || router.pathname === '/register')) {
+      isLoading(false);
+      router.push('/');
+      return;
+    }
+
     try {
-      const { data } = await axiosFetch('/auth/getCurrentUser', { withCredentials: true });
+      const { data } = await axiosFetch.post('/auth/getCurrentUser', {
+        token: cookie,
+      });
       const { user } = data;
       dispatch(setUser({ user }));
-      if (router.pathname === '/login' || router.pathname === '/register') {
-        router.push('/');
-      }
       setCache(cacheKey, user);
     } catch (error: any) {
       if (error?.response?.status === 401) return;
     }
     isLoading(false);
   };
+
+  useEffect(() => {}, []);
 
   useEffect(() => {
     const cachedData = getCache(cacheKey);

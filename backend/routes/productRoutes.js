@@ -11,6 +11,6 @@ const router = express.Router();
 
 router.route('/').get(getProducts);
 router.route('/wishlist/:id').get(getProductsWishlist).post(setProductsWishlist);
-router.route('/invoice').post(payment);
+router.route('/invoice').post(authenticateUser, payment);
 
 export default router;

@@ -1,6 +1,6 @@
 import User from '../models/User.js';
 import { StatusCodes } from 'http-status-codes';
-import { BadRequestError, UnAuthenticatedError } from '../errors/index.js';
+import { BadRequestError, NotFoundError } from '../errors/index.js';
 
 const register = async (req, res) => {
   const { name, email, password } = req.body;
@@ -29,12 +29,12 @@ const login = async (req, res) => {
   }
   const user = await User.findOne({ email }).select('+password');
   if (!user) {
-    throw new UnAuthenticatedError('User Not Found, Register Instead!!!');
+    throw new NotFoundError('User Not Found, Register Instead!!!');
   }
 
   const isPasswordCorrect = await user.comparePassword(password);
   if (!isPasswordCorrect) {
-    throw new UnAuthenticatedError('Password Wrong');
+    throw new NotFoundError('Password Wrong');
   }
   const token = user.createJWT();
   user.password = undefined;
@@ -43,7 +43,8 @@ const login = async (req, res) => {
 };
 
 const getCurrentUser = async (req, res) => {
-  const user = await User.findOne({ _id: req.user.userId });
+  const { userId } = req.user;
+  const user = await User.findById(userId);
   res.status(StatusCodes.OK).json({ user, location: user.location });
 };
 

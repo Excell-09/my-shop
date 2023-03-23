@@ -3,6 +3,7 @@ import CardProductCheckout from '@/components/CardProductCheckout';
 import Layout from '@/components/Layout';
 import Loading from '@/components/Loading';
 import axiosPost from '@/utils/axiosPost';
+import getCookie from '@/utils/getCookie';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { IUser } from '../../typings';
@@ -19,8 +20,9 @@ const Checkout = () => {
   formattedPrice = formattedPrice.slice(0, -3);
 
   const handlePayment = async () => {
+    const cookie = getCookie('token');
     setIsLoading(true);
-    if (!user) {
+    if (!user || !cookie) {
       setIsLoading(false);
       router.push('/login');
       return;
@@ -28,8 +30,7 @@ const Checkout = () => {
     try {
       const result = await axiosPost('/product/invoice', {
         amount: totalPrice,
-        email: user?.email,
-        userID: user?._id,
+        token: cookie,
       });
       window.location.replace(result.data.invoiceURL);
     } catch (error) {

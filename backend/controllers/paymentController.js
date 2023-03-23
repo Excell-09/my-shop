@@ -1,7 +1,8 @@
 import { StatusCodes } from 'http-status-codes';
 import Xendit from 'xendit-node';
-import { BadRequestError } from '../errors/index.js';
+import { BadRequestError, UnAuthenticatedError } from '../errors/index.js';
 import dotenv from 'dotenv';
+import User from '../models/User.js';
 dotenv.config();
 
 const xendit = new Xendit({
@@ -9,17 +10,23 @@ const xendit = new Xendit({
 });
 
 const payment = async (req, res) => {
-  const { amount, email, userID } = req.body;
+  const { amount } = req.body;
+  const { userId } = req.user;
+  const { email } = await User.findById(userId);
   const { Invoice } = xendit;
   const retailOutletSpecificOptions = {};
   const invoice = new Invoice(retailOutletSpecificOptions);
 
-  if (!amount || !email || !userID) {
+  if (!amount) {
     throw new BadRequestError('Please Provide your input!');
   }
 
+  if (!email || !userId) {
+    throw new UnAuthenticatedError('Please Provide your input!');
+  }
+
   const { id } = await invoice.createInvoice({
-    externalID: userID,
+    externalID: userId,
     payerEmail: email,
     description: 'test payment description',
     amount: amount,

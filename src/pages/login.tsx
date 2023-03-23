@@ -7,6 +7,7 @@ import { setLoading } from '@/slice/loadingSlice';
 import { setUser } from '@/slice/userSlice';
 import axiosPost from '@/utils/axiosPost';
 import setCookie from '@/utils/setCookie';
+import Error from 'next/error';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { ChangeEvent, FormEvent, useState } from 'react';
@@ -56,10 +57,10 @@ const Login = () => {
       dispatch(setUser({ user }));
     } catch (error: any) {
       console.log(error)
-      if (error?.response?.status === 429) {
-        dispatch(setAlert({ text: (error?.response?.statusText + '!') as string, status: 'error' }));
+      if (error.response.status === 429) {
+        dispatch(setAlert({ text: (error.response.statusText + '!') as string, status: 'error' }));
       } else {
-        dispatch(setAlert({ text: error?.response?.data.msg as string, status: 'error' }));
+        dispatch(setAlert({ text: error.response.data.msg as string, status: 'error' }));
       }
     }
     dispatch(setLoading({ loading: false }));

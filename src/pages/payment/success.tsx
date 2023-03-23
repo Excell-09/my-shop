@@ -1,14 +1,15 @@
-import Link from 'next/link';
+import Layout from '@/components/Layout';
 import React from 'react';
+import { CheckBadgeIcon } from '@heroicons/react/24/outline';
 
 const Success = () => {
   return (
-    <div className='flex justify-center items-center w-full h-screen'>
-      <div className='flex'>
+    <Layout>
+      <div className='flex justify-center items-center w-full h-screen -mt-16 space-x-1'>
+        <CheckBadgeIcon className='text-green-500 w-7 h-7' />
         <h3 className='text-green-500 text-xl font-bold'>Payment Success!</h3>
-        <Link href={'/'}>Back</Link>
       </div>
-    </div>
+    </Layout>
   );
 };
 
