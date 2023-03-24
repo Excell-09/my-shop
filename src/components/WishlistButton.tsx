@@ -26,13 +26,13 @@ const WishlistButton = (props: Props) => {
     }
 
     try {
+      await axiosPost<Data>(`/product/wishlist/${user?._id}`, {
+        id: props._id,
+      });
       router.push('/wishlist');
       if (router.pathname === '/wishlist') {
         router.reload();
       }
-      await axiosPost<Data>(`/product/wishlist/${user?._id}`, {
-        id: props._id,
-      });
     } catch (error: any) {
       if (error.response.data.msg === 'you need to login') {
         alert(error.response.data.msg);
