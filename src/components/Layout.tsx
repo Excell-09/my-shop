@@ -4,12 +4,13 @@ import Navbar from './Navbar';
 import MobileNavbar from './MobileNavbar';
 import axiosFetch from '@/utils/axiosCreate';
 import logoutUser from '@/utils/logoutUser';
-import { useAppDispatch, useAppSelector } from '@/app/hooks';
+import { useAppDispatch } from '@/app/hooks';
 import { clearUser, setUser } from '@/slice/userSlice';
 import { useRouter } from 'next/router';
 import LoadingBig from './LoadingBig';
 import { getCache, setCache } from '@/utils/cache';
 import getCookie from '@/utils/getCookie';
+import Footer from './Footer';
 
 type Props = {
   children: ReactNode;
@@ -81,7 +82,7 @@ const Layout = ({ children }: Props) => {
         <MobileNavbar />
       </header>
       <main className='pt-16'>{loading ? <LoadingBig /> : children}</main>
-      <footer>&copy; My App</footer>
+      <Footer />
     </>
   );
 };
