@@ -62,7 +62,7 @@ const Register = () => {
 
   return (
     <Layout>
-      <section className='min-h-screen flex justify-center items-center px-2'>
+      <section className='min-h-screen flex justify-center items-center px-2 -mt-16'>
         <div className=' bg-white p-5 rounded-md basis-[400px]'>
           <h2 className='font-bold text-2xl text-pink-500 text-center'>Get Started</h2>
           <div className='my-3'>
