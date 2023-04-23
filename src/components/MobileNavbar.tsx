@@ -10,6 +10,7 @@ import { useRouter } from 'next/router';
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
 import logoutUser from '@/utils/logoutUser';
 import { clearUser } from '@/slice/userSlice';
+import { RootState } from '@/app/store';
 
 interface INavigation {
   display: string;
@@ -29,8 +30,8 @@ const MobileNavbar = () => {
     closed: { x: '100%' },
   };
 
-  const totalLengthItem = useAppSelector((state) => state.cart.totalItems);
-  const user = useAppSelector((state) => state.user.user);
+  const totalLengthItem = useAppSelector((state: RootState) => state.cart.totalItems);
+  const user = useAppSelector((state: RootState) => state.user.user);
   const dispatch = useAppDispatch();
 
   return (

@@ -7,6 +7,7 @@ import { ShoppingCartIcon } from '@heroicons/react/24/outline';
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
 import logoutUser from '@/utils/logoutUser';
 import { clearUser } from '@/slice/userSlice';
+import { RootState } from '@/app/store';
 
 interface INavigation {
   display: string;
@@ -20,9 +21,9 @@ const navigation: INavigation[] = [
 
 export default function Navbar() {
   const router = useRouter();
-  const totalLengthItem = useAppSelector((state) => state.cart.totalItems);
+  const totalLengthItem = useAppSelector((state: RootState) => state.cart.totalItems);
 
-  const user = useAppSelector((state) => state.user.user);
+  const user = useAppSelector((state: RootState) => state.user.user);
 
   const dispatch = useAppDispatch();
 
@@ -81,7 +82,7 @@ export default function Navbar() {
                     onClick={() => {
                       logoutUser();
                       dispatch(clearUser({}));
-                      router.push('/login')
+                      router.push('/login');
                     }}>
                     Logout
                   </button>

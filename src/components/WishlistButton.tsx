@@ -5,6 +5,7 @@ import { IUser } from '../../typings';
 import { useAppSelector } from '@/app/hooks';
 import axiosPost from '@/utils/axiosPost';
 import { useRouter } from 'next/router';
+import { RootState } from '@/app/store';
 
 interface Props {
   _id: string;
@@ -16,7 +17,7 @@ interface Data {
 }
 
 const WishlistButton = (props: Props) => {
-  const user = useAppSelector<IUser | null>((state) => state.user.user);
+  const user = useAppSelector<IUser>((state) => state?.user?.user!);
   const router = useRouter();
 
   const handleWishlist = async () => {

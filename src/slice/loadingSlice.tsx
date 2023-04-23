@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { IProduct } from '../../typings';
 
 interface CartItem {
   loading: boolean;
