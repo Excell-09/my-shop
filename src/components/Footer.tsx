@@ -53,7 +53,7 @@ const Footer = () => {
             <button
               onClick={() => {
                 router.push('/register');
-                window.location.reload();
+                router.reload();
               }}
               className='hover:text-indigo-500 transition duration-100 text-gray-600 font-semibold'>
               Register
@@ -61,7 +61,7 @@ const Footer = () => {
             <button
               onClick={() => {
                 router.push('/login');
-                window.location.reload();
+                router.reload();
               }}
               className='hover:text-indigo-500 transition duration-100 text-gray-600 font-semibold'>
               Login
