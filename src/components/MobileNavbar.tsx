@@ -30,8 +30,8 @@ const MobileNavbar = () => {
     closed: { x: '100%' },
   };
 
-  const totalLengthItem = useAppSelector((state: RootState) => state.cart.totalItems);
-  const user = useAppSelector((state: RootState) => state.user.user);
+  const totalLengthItem = useAppSelector((state) => state.cart.totalItems);
+  const user = useAppSelector((state) => state.user.user);
   const dispatch = useAppDispatch();
 
   return (
