@@ -55,7 +55,7 @@ const Footer = () => {
                 router.push('/register');
                 router.reload();
               }}
-              className='hover:text-indigo-500 transition duration-100 text-gray-600 font-semibold'>
+              className='hover:text-indigo-500 transition duration-100 text-gray-600 font-semibold text-start'>
               Register
             </button>
             <button
@@ -63,7 +63,7 @@ const Footer = () => {
                 router.push('/login');
                 router.reload();
               }}
-              className='hover:text-indigo-500 transition duration-100 text-gray-600 font-semibold'>
+              className='hover:text-indigo-500 transition duration-100 text-gray-600 font-semibold text-start'>
               Login
             </button>
           </div>
