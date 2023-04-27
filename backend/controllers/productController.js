@@ -57,7 +57,7 @@ const setProductsWishlist = async (req, res) => {
   }
 
   await user.save();
-  res.status(StatusCodes.CREATED).json('Wistlist updated!');
+  res.status(StatusCodes.CREATED).json('Wishlist updated!');
 };
 
 export { getProducts, getProductsWishlist, setProductsWishlist };
