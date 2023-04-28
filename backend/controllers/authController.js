@@ -29,12 +29,12 @@ const login = async (req, res) => {
   }
   const user = await User.findOne({ email }).select('+password');
   if (!user) {
-    throw new NotFoundError('User Not Found, Register Instead!!!');
+    throw new NotFoundError('User Not Found, Register Instead!');
   }
 
   const isPasswordCorrect = await user.comparePassword(password);
   if (!isPasswordCorrect) {
-    throw new NotFoundError('Password Wrong');
+    throw new NotFoundError('User Not Found, Register Instead!');
   }
   const token = user.createJWT();
   user.password = undefined;

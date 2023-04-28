@@ -9,3 +9,8 @@ export interface AuthUser {
   user: User;
   token: string;
 }
+
+export interface ErrorMessage {
+  message: string;
+  type?: 'success' | 'error';
+}
