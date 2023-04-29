@@ -1,4 +1,4 @@
-import { atom,  useRecoilState } from 'recoil';
+import { atom, useRecoilState } from 'recoil';
 import { Product } from '../../typing';
 
 const productsState = atom<Product[]>({
@@ -6,10 +6,9 @@ const productsState = atom<Product[]>({
   default: [], // default value (aka initial value)
 });
 
-
 export const useProductsState = () => {
-  const [productState, setProductState] = useRecoilState(productsState);
-  return { productState, setProductState };
+  const [products, setProducts] = useRecoilState(productsState);
+  return { products, setProducts };
 };
 
 export default productsState;

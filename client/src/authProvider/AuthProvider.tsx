@@ -32,6 +32,7 @@ const AuthProvider = (props: props) => {
         token: token,
       });
       setUser(data?.user as User);
+      console.log("jalan gkk")
     } catch (error) {
       const result: string = (error as Error).message;
       if (result === "Cannot read properties of undefined (reading 'split')") return;

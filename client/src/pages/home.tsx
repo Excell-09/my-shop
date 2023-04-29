@@ -13,7 +13,7 @@ import Loading from '../components/Loading';
 type callback = (data: Product[]) => void;
 
 export default function Home() {
-  const { productState, setProductState } = useProductsState();
+  const { products, setProducts } = useProductsState();
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
   const getProducts = async (fn: callback) => {
@@ -29,7 +29,7 @@ export default function Home() {
 
   React.useEffect(() => {
     getProducts((res) => {
-      setProductState(res);
+      setProducts(res);
       setIsLoading(false);
     });
   }, []);
@@ -67,7 +67,7 @@ export default function Home() {
               <Loading />
             ) : (
               <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3'>
-                {productState.map((item) => (
+                {products.map((item) => (
                   <ProductCard
                     key={item._id}
                     _id={item._id}

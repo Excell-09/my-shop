@@ -1,8 +1,10 @@
 import { Product } from '../../typing';
+import ButtonWishlist from './ButtonWishlist';
 
 export default function ProductCard(props: Product) {
   return (
     <div className=' p-1 bg-white space-y-3 flex flex-col justify-between cursor-pointer hover:z-20 hover:border-2 hover:border-indigo-500 relative group transition-all duration-100'>
+      <ButtonWishlist _idProducts={props._id} />
       <div className='max-w-[125px] mx-auto'>
         <img
           src={props.imageUrl}
