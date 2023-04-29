@@ -19,10 +19,14 @@ export default function Wishlist() {
     if (loading) setLoading(false);
     setLoading(true);
     try {
-      const response = await axiosCreate<Product[]>(`/product/wishlist/${userId}`);
+      const response = await axiosCreate<Product[] | string>(`/product/wishlist/${userId}`);
+      if (typeof response.data === 'string') {
+        fn([]);
+        return;
+      }
       fn(response.data);
     } catch (error) {
-      console.log(error);
+      fn([]);
     }
   };
 
@@ -40,6 +44,8 @@ export default function Wishlist() {
     //eslint-disable-next-line
   }, [user?._id]);
 
+  console.log(wishlistProducts);
+
   return (
     <>
       <Header />
@@ -53,7 +59,7 @@ export default function Wishlist() {
           ) : loading ? (
             <Loading />
           ) : wishlistProducts.length === 0 ? (
-            <h3 className='text-indigo-500 font-semibold text-center'>No Wishlist Products</h3>
+            <h3 className='text-indigo-500 font-semibold text-center'>No Wishlist Products!</h3>
           ) : (
             <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3'>
               {wishlistProducts.map((item) => (

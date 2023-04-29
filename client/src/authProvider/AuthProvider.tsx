@@ -12,7 +12,7 @@ type props = {
   children: ReactNode;
 };
 
-    //eslint-disable-next-line
+//eslint-disable-next-line
 export const logoutUser = () => {
   let cookieValue = 'token=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;SameSite=Lax;';
 
@@ -35,7 +35,6 @@ const AuthProvider = (props: props) => {
         token: token,
       });
       setUser(data?.user as User);
-      console.log('jalan gkk');
     } catch (error) {
       const result: string = (error as Error).message;
       if (result === "Cannot read properties of undefined (reading 'split')") return;
