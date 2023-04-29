@@ -8,6 +8,7 @@ import ProductCard from '../components/ProductCard';
 import Footer from '../components/Footer';
 import axiosCreate from '../utils/axiosCreate';
 import { Product } from '../../typing';
+import Loading from '../components/Loading';
 
 type callback = (data: Product[]) => void;
 
@@ -63,20 +64,7 @@ export default function Home() {
           </div>
           <div className='mt-3 relative z-10'>
             {isLoading ? (
-              <div className='flex gap-1 justify-center'>
-                <span className='relative flex h-5 w-5'>
-                  <span className='animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75'></span>
-                  <span className='relative inline-flex rounded-full h-5 w-5 bg-sky-500'></span>
-                </span>
-                <span className='relative flex h-5 w-5'>
-                  <span className='animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75'></span>
-                  <span className='relative inline-flex rounded-full h-5 w-5 bg-sky-500'></span>
-                </span>
-                <span className='relative flex h-5 w-5'>
-                  <span className=' animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75'></span>
-                  <span className='relative inline-flex rounded-full h-5 w-5 bg-sky-500'></span>
-                </span>
-              </div>
+              <Loading />
             ) : (
               <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3'>
                 {productState.map((item) => (
