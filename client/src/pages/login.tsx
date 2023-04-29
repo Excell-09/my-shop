@@ -49,6 +49,7 @@ export default function Login() {
       setUser(response.data.user);
       control._reset();
       setError({ message: 'Login Succeed...', type: 'success' });
+      //eslint-disable-next-line
     } catch (error: any) {
       setError({ message: error.response.data.msg, type: 'error' });
       setLoading(false);

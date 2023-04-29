@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Header from '../components/Header';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { Carousel } from 'react-responsive-carousel';
@@ -9,12 +9,14 @@ import Footer from '../components/Footer';
 import axiosCreate from '../utils/axiosCreate';
 import { Product } from '../../typing';
 import Loading from '../components/Loading';
+import { useLocation } from 'react-router-dom';
 
 type callback = (data: Product[]) => void;
 
 export default function Home() {
   const { products, setProducts } = useProductsState();
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const { pathname } = useLocation();
 
   const getProducts = async (fn: callback) => {
     if (isLoading) setIsLoading(false);
@@ -27,11 +29,17 @@ export default function Home() {
     }
   };
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    //eslint-disable-next-line
+  }, [pathname]);
+
   React.useEffect(() => {
     getProducts((res) => {
       setProducts(res);
       setIsLoading(false);
     });
+    //eslint-disable-next-line
   }, []);
 
   return (

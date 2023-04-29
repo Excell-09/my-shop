@@ -42,6 +42,7 @@ export default function Register() {
       await axiosCreate.post('/auth/register', data);
       control._reset();
       setError({ message: 'Account Created', type: 'success' });
+      //eslint-disable-next-line
     } catch (error: any) {
       setError({ message: error.response.data.msg, type: 'error' });
       setLoading(false);

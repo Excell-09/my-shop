@@ -3,19 +3,22 @@ import { HeartIcon as HeartIconSolid } from '@heroicons/react/24/solid';
 import { HeartIcon } from '@heroicons/react/24/outline';
 import { useUserState } from '../atom/userAtom';
 import axiosCreate from '../utils/axiosCreate';
+import { useRecoilState } from 'recoil';
+import productIdWishlistState from '../atom/productIdWishlist';
 
 type props = {
   _idProducts: string;
 };
 
 export default function ButtonWishlist({ _idProducts }: props) {
-  const [productId, setProductId] = React.useState<string[]>([]);
   const { user } = useUserState();
+  const [productId, setProductId] = useRecoilState(productIdWishlistState);
 
   React.useEffect(() => {
     if (user?._id) {
       setProductId(user.wishlistProduct);
     }
+    //eslint-disable-next-line
   }, [user?._id]);
 
   const isLiked = (): boolean => {
@@ -33,7 +36,7 @@ export default function ButtonWishlist({ _idProducts }: props) {
     setProductId((id) => [...id, _idProducts]);
   };
 
-  const handleRequestLike = React.useCallback(async () => {
+  const handleRequestLike = async () => {
     if (!user?._id) return;
     try {
       if (isLiked()) {
@@ -50,10 +53,10 @@ export default function ButtonWishlist({ _idProducts }: props) {
         handleDisLike();
       }
     }
-  }, [productId]);
+  };
 
   return (
-    <div className='absolute top-1 right-1 z-30'>
+    <div className='absolute top-1 right-1'>
       {isLiked() ? (
         <HeartIconSolid className='w-8 text-pink-500' onClick={() => handleRequestLike()} />
       ) : (
