@@ -12,9 +12,11 @@
   "dependencies": {
     "@heroicons/react": "^2.0.17",
     "axios": "^1.4.0",
+    "framer-motion": "^10.12.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.43.9",
+    "react-responsive-carousel": "^3.2.23",
     "react-router-dom": "^6.10.0",
     "recoil": "^0.7.7"
   },

@@ -7,13 +7,29 @@ import { useErrorState } from '../atom/ErrorAtom';
 import { useLoadingState } from '../atom/loadingAtom';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import { useState } from 'react';
+import { AuthUser } from '../../typing';
+import { useSetRecoilState } from 'recoil';
+import userState from '../atom/userAtom';
 
 export default function Login() {
+  const setUser = useSetRecoilState(userState);
+
   const { error, setError } = useErrorState();
   const { isLoading, setLoading } = useLoadingState();
   const { control, register, handleSubmit } = useForm();
   const navigate = useNavigate();
   const [isPasswordShow, setIsPasswordShow] = useState<boolean>(false);
+
+  const setTokenToCookie = (token: string) => {
+    const date = new Date();
+    date.setTime(date.getTime() + 24 * 60 * 60 * 1000);
+    const expires = `expires=${date.toUTCString()}`;
+    let cookieValue = `token=${token};${expires};path=/;SameSite=Lax;`;
+    if (window.location.protocol === 'https:') {
+      cookieValue += `domain=${import.meta.env.DOMAIN};Secure`;
+    }
+    document.cookie = cookieValue;
+  };
 
   const handleRegister: SubmitHandler<FieldValues> = async (value) => {
     if (isLoading) return;
@@ -28,8 +44,9 @@ export default function Login() {
     const data = { email: value.email, password: value.password };
 
     try {
-      const response = await axiosCreate.post('/auth/login', data);
-      console.log(response);
+      const response = await axiosCreate.post<AuthUser>('/auth/login', data);
+      setTokenToCookie(response.data.token);
+      setUser(response.data.user);
       control._reset();
       setError({ message: 'Login Succeed...', type: 'success' });
     } catch (error: any) {

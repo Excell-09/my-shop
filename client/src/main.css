@@ -37,7 +37,7 @@
   }
 
   .link {
-    @apply text-indigo-500 hover:underline transition-all duration-150
+    @apply text-indigo-500 hover:underline transition-all duration-150 uppercase
   }
 
 

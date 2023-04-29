@@ -14,3 +14,10 @@ export interface ErrorMessage {
   message: string;
   type?: 'success' | 'error';
 }
+
+export interface Product {
+  _id: string;
+  title: string;
+  imageUrl: string;
+  price: number;
+}

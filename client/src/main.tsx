@@ -7,10 +7,10 @@ import './main.css';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-    <AuthProvider>
-      <RecoilRoot>
+    <RecoilRoot>
+      <AuthProvider>
         <App />
-      </RecoilRoot>
-    </AuthProvider>
+      </AuthProvider>
+    </RecoilRoot>
   </React.StrictMode>
 );
