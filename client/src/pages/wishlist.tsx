@@ -15,6 +15,7 @@ export default function Wishlist() {
   const [wishlistProducts, setWishlistProducts] = React.useState<Product[]>([]);
   const [loading, setLoading] = React.useState<boolean>(false);
   const { user } = useUserState();
+  
   const getWishlistProducts = async (userId: string, fn: Callback) => {
     if (loading) setLoading(false);
     setLoading(true);
@@ -36,7 +37,7 @@ export default function Wishlist() {
 
   useEffect(() => {
     if (user?._id) {
-      getWishlistProducts(user._id, (products) => {
+      getWishlistProducts(user?._id, (products) => {
         setWishlistProducts(products);
         setLoading(false);
       });
