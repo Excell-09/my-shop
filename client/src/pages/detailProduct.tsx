@@ -55,7 +55,6 @@ export default function DetailProduct() {
         amount: product.price,
       });
       window.location.replace(response.data.invoiceURL);
-      console.log(response);
     } catch (error) {
       console.log(error);
     }
