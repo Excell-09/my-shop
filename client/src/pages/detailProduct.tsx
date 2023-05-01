@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { useProductsState } from '../atom/productsAtom';
@@ -7,6 +7,9 @@ import { Product } from '../../typing';
 import { useUserState } from '../atom/userAtom';
 import { useErrorState } from '../atom/ErrorAtom';
 import axiosCreate from '../utils/axiosCreate';
+import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
+import { useDispatch } from 'react-redux/es/hooks/useDispatch';
+import { addToCart } from '../slice/cartSlice';
 
 export default function DetailProduct() {
   const [product, setProduct] = useState<Product>();
@@ -16,6 +19,15 @@ export default function DetailProduct() {
   const navigate = useNavigate();
   const { user } = useUserState();
   const { products } = useProductsState();
+  const { pathname } = useLocation();
+  const [totalItem, setTotalItem] = useState(1);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    //eslint-disable-next-line
+  }, [pathname]);
+
   useEffect(() => {
     if (products.length === 0) {
       navigate('/');
@@ -49,6 +61,18 @@ export default function DetailProduct() {
     }
     setLoading(false);
   };
+
+  const handleAddToCart = () => {
+    if (loading) setLoading(false);
+    if (!user?._id || !product) {
+      navigate('/login');
+      setError({ message: 'need Login!', type: 'error' });
+      return;
+    }
+    dispatch(addToCart({ product, totalItem }));
+    return;
+  };
+
   return (
     <>
       <Header />
@@ -62,15 +86,60 @@ export default function DetailProduct() {
             />
           </div>
         </article>
-        <article className=''>
-          <h1 className='font-bold text-2xl text-gray-600 mb-3'>{product?.title}</h1>
+        <article className='space-y-3'>
+          <h1 className='font-bold text-2xl text-gray-600'>{product?.title}</h1>
           <p className='text-gray-500'>
             Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolore in necessitatibus culpa
             reiciendis voluptatum, ipsa amet expedita debitis natus dolorem? Lo
           </p>
-          <button disabled={loading} className='btn-full btn-color' onClick={() => handlePayment()}>
-            {loading ? 'loading...' : 'Buy Now'}
-          </button>
+          <h3 className='text-xl font-medium text-indigo-500 '>
+            Rp {product?.price.toLocaleString('id')}
+          </h3>
+          <div className='border-2 inline-flex'>
+            <div className='max-w-[23px] mx-2'>
+              <ChevronLeftIcon
+                className='w-full h-full cursor-pointer'
+                onClick={() =>
+                  setTotalItem((prevValue) => {
+                    if (prevValue <= 1) {
+                      alert('minimal item' + prevValue);
+                      return 1;
+                    }
+                    return (prevValue -= 1);
+                  })
+                }
+              />
+            </div>
+            <div className=' border-x-2 px-4 font-semibold'>{totalItem}</div>
+            <div className='max-w-[23px] mx-2'>
+              <ChevronRightIcon
+                className='w-full h-full cursor-pointer'
+                onClick={() =>
+                  setTotalItem((prevValue) => {
+                    if (prevValue >= 10) {
+                      alert('maximal item' + prevValue);
+                      return prevValue;
+                    }
+                    return (prevValue += 1);
+                  })
+                }
+              />
+            </div>
+          </div>
+          <div className='flex gap-2'>
+            <button
+              disabled={loading}
+              className='btn-full btn-color'
+              onClick={() => handlePayment()}>
+              {loading ? 'loading...' : 'Buy Now'}
+            </button>
+            <button
+              disabled={loading}
+              className='btn-full btn-color--outline'
+              onClick={() => handleAddToCart()}>
+              {loading ? 'loading...' : 'Add To Cart'}
+            </button>
+          </div>
         </article>
       </main>
       <Footer />
