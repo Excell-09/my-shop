@@ -7,9 +7,9 @@ import { Product } from '../../typing';
 import { useUserState } from '../atom/userAtom';
 import { useErrorState } from '../atom/ErrorAtom';
 import axiosCreate from '../utils/axiosCreate';
-import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import { useDispatch } from 'react-redux/es/hooks/useDispatch';
 import { addToCart } from '../slice/cartSlice';
+import IncrementDecrementProduct from '../components/IncrementDecrementProduct';
 
 export default function DetailProduct() {
   const [product, setProduct] = useState<Product>();
@@ -73,6 +73,23 @@ export default function DetailProduct() {
     return;
   };
 
+  const handleDecrement = () =>
+    setTotalItem((prevValue) => {
+      if (prevValue <= 1) {
+        alert('minimal item' + prevValue);
+        return 1;
+      }
+      return (prevValue -= 1);
+    });
+  const handleIncrement = () =>
+    setTotalItem((prevValue) => {
+      if (prevValue >= 10) {
+        alert('maximal item' + prevValue);
+        return prevValue;
+      }
+      return (prevValue += 1);
+    });
+
   return (
     <>
       <Header />
@@ -95,37 +112,11 @@ export default function DetailProduct() {
           <h3 className='text-xl font-medium text-indigo-500 '>
             Rp {product?.price.toLocaleString('id')}
           </h3>
-          <div className='border-2 inline-flex'>
-            <div className='max-w-[23px] mx-2'>
-              <ChevronLeftIcon
-                className='w-full h-full cursor-pointer'
-                onClick={() =>
-                  setTotalItem((prevValue) => {
-                    if (prevValue <= 1) {
-                      alert('minimal item' + prevValue);
-                      return 1;
-                    }
-                    return (prevValue -= 1);
-                  })
-                }
-              />
-            </div>
-            <div className=' border-x-2 px-4 font-semibold'>{totalItem}</div>
-            <div className='max-w-[23px] mx-2'>
-              <ChevronRightIcon
-                className='w-full h-full cursor-pointer'
-                onClick={() =>
-                  setTotalItem((prevValue) => {
-                    if (prevValue >= 10) {
-                      alert('maximal item' + prevValue);
-                      return prevValue;
-                    }
-                    return (prevValue += 1);
-                  })
-                }
-              />
-            </div>
-          </div>
+          <IncrementDecrementProduct
+            handleEventDecrement={handleDecrement}
+            handleEventIncrement={handleIncrement}
+            totalItem={totalItem}
+          />
           <div className='flex gap-2'>
             <button
               disabled={loading}

@@ -21,3 +21,8 @@ export interface Product {
   imageUrl: string;
   price: number;
 }
+
+export interface ProductCart extends Product{
+  totalItem: number;
+  totalPrice: number;
+}
