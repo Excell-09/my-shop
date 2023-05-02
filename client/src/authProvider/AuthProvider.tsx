@@ -2,7 +2,7 @@ import { createContext, useState, ReactNode, useEffect } from 'react';
 import { Product, User } from '../../typing';
 import axiosCreate from '../utils/axiosCreate';
 import Alert from '../components/Alert';
-import { useRecoilState,  useSetRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import userState from '../atom/userAtom';
 import productIdWishlistState from '../atom/productIdWishlist';
 import { useLoadingState } from '../atom/loadingAtom';
@@ -21,7 +21,7 @@ export const logoutUser = () => {
   let cookieValue = 'token=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;SameSite=Lax;';
 
   if (window.location.protocol === 'https:') {
-    cookieValue += `domain=${import.meta.env.DOMAIN};Secure`;
+    cookieValue += `domain=${import.meta.env.VITE_BACKEND_URL};Secure`;
   }
   document.cookie = cookieValue;
   window.location.reload();
