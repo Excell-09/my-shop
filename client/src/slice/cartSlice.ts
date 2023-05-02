@@ -50,7 +50,7 @@ const cartSlice = createSlice({
         totalPrice: newItem.product.price * newItem.totalItem || 1,
       });
       state.totalItem += newItem.totalItem;
-      state.totalPrice += state.totalItem * newItem.product.price;
+      state.totalPrice += newItem.totalItem * newItem.product.price;
     },
     removeItem: (state, action: ActionRemoveItemToCart) => {
       const itemIndex = state.product.findIndex((item) => item._id === action.payload.productId);

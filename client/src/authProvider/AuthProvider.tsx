@@ -1,16 +1,20 @@
 import { createContext, useState, ReactNode, useEffect } from 'react';
-import { User } from '../../typing';
+import { Product, User } from '../../typing';
 import axiosCreate from '../utils/axiosCreate';
 import Alert from '../components/Alert';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState,  useSetRecoilState } from 'recoil';
 import userState from '../atom/userAtom';
 import productIdWishlistState from '../atom/productIdWishlist';
+import { useLoadingState } from '../atom/loadingAtom';
+import { useProductsState } from '../atom/productsAtom';
 
 const AuthContext = createContext<User | null>(null);
 
 type props = {
   children: ReactNode;
 };
+
+type callback = (data: Product[]) => void;
 
 //eslint-disable-next-line
 export const logoutUser = () => {
@@ -24,8 +28,10 @@ export const logoutUser = () => {
 };
 
 const AuthProvider = (props: props) => {
+  const { setProducts } = useProductsState();
   const setUser = useSetRecoilState(userState);
-  const productIdWishlist = useRecoilValue(productIdWishlistState);
+  const [productIdWishlist, setProductIdWishlist] = useRecoilState(productIdWishlistState);
+  const { isLoading, setLoading } = useLoadingState();
 
   const getCurrentUserFromCookie = async () => {
     try {
@@ -42,8 +48,26 @@ const AuthProvider = (props: props) => {
     }
   };
 
+  const getProducts = async (fn: callback) => {
+    if (isLoading) setLoading(false);
+    setLoading(true);
+    try {
+      const { data } = await axiosCreate<Product[]>('/product');
+      fn(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     getCurrentUserFromCookie();
+    getProducts((res) => {
+      setProducts(res);
+      setLoading(false);
+    });
+    if (user?._id) {
+      setProductIdWishlist(user.wishlistProduct);
+    }
     //eslint-disable-next-line
   }, [productIdWishlist]);
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import { useEffect } from 'react';
 import { HeartIcon as HeartIconSolid } from '@heroicons/react/24/solid';
 import { HeartIcon } from '@heroicons/react/24/outline';
 import { useUserState } from '../atom/userAtom';
@@ -14,12 +14,12 @@ export default function ButtonWishlist({ _idProducts }: props) {
   const { user } = useUserState();
   const [productId, setProductId] = useRecoilState(productIdWishlistState);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (user?._id) {
       setProductId(user.wishlistProduct);
     }
     //eslint-disable-next-line
-  }, [user?._id]);
+  }, []);
 
   const isLiked = (): boolean => {
     return productId.includes(_idProducts);
@@ -35,6 +35,7 @@ export default function ButtonWishlist({ _idProducts }: props) {
   const handleLike = () => {
     setProductId((id) => [...id, _idProducts]);
   };
+
 
   const handleRequestLike = async () => {
     if (!user?._id) return;

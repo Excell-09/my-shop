@@ -6,41 +6,18 @@ import banner from '../assets/banner';
 import { useProductsState } from '../atom/productsAtom';
 import ProductCard from '../components/ProductCard';
 import Footer from '../components/Footer';
-import axiosCreate from '../utils/axiosCreate';
-import { Product } from '../../typing';
 import Loading from '../components/Loading';
 import { useLocation } from 'react-router-dom';
 
-type callback = (data: Product[]) => void;
-
 export default function Home() {
-  const { products, setProducts } = useProductsState();
-  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const { products } = useProductsState();
+  const [isLoading] = React.useState<boolean>(false);
   const { pathname } = useLocation();
-
-  const getProducts = async (fn: callback) => {
-    if (isLoading) setIsLoading(false);
-    setIsLoading(true);
-    try {
-      const { data } = await axiosCreate<Product[]>('/product');
-      fn(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   useEffect(() => {
     window.scrollTo(0, 0);
     //eslint-disable-next-line
   }, [pathname]);
-
-  React.useEffect(() => {
-    getProducts((res) => {
-      setProducts(res);
-      setIsLoading(false);
-    });
-    //eslint-disable-next-line
-  }, []);
 
   return (
     <>

@@ -7,6 +7,8 @@ import { useUserState } from '../atom/userAtom';
 import Loading from '../components/Loading';
 import ProductCard from '../components/ProductCard';
 import { useLocation } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
+import productIdWishlistState from '../atom/productIdWishlist';
 
 type Callback = (data: Product[]) => void;
 
@@ -15,7 +17,10 @@ export default function Wishlist() {
   const [wishlistProducts, setWishlistProducts] = React.useState<Product[]>([]);
   const [loading, setLoading] = React.useState<boolean>(false);
   const { user } = useUserState();
-  
+  const productIdWishlist = useRecoilState(productIdWishlistState);
+
+  console.log(productIdWishlist)
+
   const getWishlistProducts = async (userId: string, fn: Callback) => {
     if (loading) setLoading(false);
     setLoading(true);
@@ -44,8 +49,6 @@ export default function Wishlist() {
     }
     //eslint-disable-next-line
   }, [user?._id]);
-
-  console.log(wishlistProducts);
 
   return (
     <>
