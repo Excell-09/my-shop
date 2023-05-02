@@ -21,7 +21,7 @@ export const logoutUser = () => {
   let cookieValue = 'token=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;SameSite=Lax;';
 
   if (window.location.protocol === 'https:') {
-    cookieValue += `domain=${import.meta.env.VITE_CLIENT_URL};Secure`;
+    cookieValue += `domain=${import.meta.env.VITE_CLIENT_DOMAIN};Secure`;
   }
   document.cookie = cookieValue;
   window.location.reload();
@@ -33,17 +33,35 @@ const AuthProvider = (props: props) => {
   const [productIdWishlist, setProductIdWishlist] = useRecoilState(productIdWishlistState);
   const { isLoading, setLoading } = useLoadingState();
 
+  function getCookie(cname: string) {
+    const name = cname + '=';
+    const decodedCookie = decodeURIComponent(document.cookie);
+    const ca = decodedCookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+      let c = ca[i];
+      while (c.charAt(0) == ' ') {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return '';
+  }
+
   const getCurrentUserFromCookie = async () => {
     try {
-      const splitCookie = document.cookie.split(';');
-      const token = splitCookie[1].split('=')[1];
+      const token = getCookie('token');
+      if (token === '') {
+        throw new Error("you don't have cookie");
+      }
       const { data } = await axiosCreate.post<{ user: User } | null>('/auth/getCurrentUser', {
-        token: token,
+        token,
       });
       setUser(data?.user as User);
     } catch (error) {
       const result: string = (error as Error).message;
-      if (result === "Cannot read properties of undefined (reading 'split')") return;
+      if (result === "you don't have cookie") return;
       setUser(null);
     }
   };
