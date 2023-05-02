@@ -19,7 +19,6 @@ export default function Wishlist() {
   const { user } = useUserState();
   const productIdWishlist = useRecoilState(productIdWishlistState);
 
-  console.log(productIdWishlist)
 
   const getWishlistProducts = async (userId: string, fn: Callback) => {
     if (loading) setLoading(false);
@@ -35,6 +34,7 @@ export default function Wishlist() {
       fn([]);
     }
   };
+
 
   useEffect(() => {
     window.scrollTo(0, 0);

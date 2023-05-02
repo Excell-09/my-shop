@@ -21,7 +21,7 @@ export const logoutUser = () => {
   let cookieValue = 'token=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;SameSite=Lax;';
 
   if (window.location.protocol === 'https:') {
-    cookieValue += `domain=${import.meta.env.VITE_BACKEND_URL};Secure`;
+    cookieValue += `domain=${import.meta.env.VITE_CLIENT_URL};Secure`;
   }
   document.cookie = cookieValue;
   window.location.reload();

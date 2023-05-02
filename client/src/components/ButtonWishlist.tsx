@@ -47,7 +47,6 @@ export default function ButtonWishlist({ _idProducts }: props) {
       }
       await axiosCreate.post('/product/wishlist/' + user?._id, { id: _idProducts });
     } catch (error) {
-      console.log(error);
       if (isLiked()) {
         handleLike();
       } else {

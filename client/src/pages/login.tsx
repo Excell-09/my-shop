@@ -26,7 +26,7 @@ export default function Login() {
     const expires = `expires=${date.toUTCString()}`;
     let cookieValue = `token=${token};${expires};path=/;SameSite=Lax;`;
     if (window.location.protocol === 'https:') {
-      cookieValue += `domain=${import.meta.env.VITE_BACKEND_URL};Secure`;
+      cookieValue += `domain=${import.meta.env.VITE_CLIENT_URL};Secure`;
     }
     document.cookie = cookieValue;
   };
