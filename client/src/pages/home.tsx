@@ -8,10 +8,11 @@ import ProductCard from '../components/ProductCard';
 import Footer from '../components/Footer';
 import Loading from '../components/Loading';
 import { useLocation } from 'react-router-dom';
+import { useLoadingState } from '../atom/loadingAtom';
 
 export default function Home() {
   const { products } = useProductsState();
-  const [isLoading] = React.useState<boolean>(false);
+  const { isLoading } = useLoadingState();
   const { pathname } = useLocation();
 
   useEffect(() => {
