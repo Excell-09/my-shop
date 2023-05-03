@@ -10,6 +10,7 @@ import axiosCreate from '../utils/axiosCreate';
 import { useDispatch } from 'react-redux/es/hooks/useDispatch';
 import { addToCart } from '../slice/cartSlice';
 import IncrementDecrementProduct from '../components/IncrementDecrementProduct';
+import getCookie from '../utils/getCookie';
 
 export default function DetailProduct() {
   const [product, setProduct] = useState<Product>();
@@ -48,8 +49,7 @@ export default function DetailProduct() {
     }
 
     try {
-      const getCookie = document.cookie.split(';');
-      const token = getCookie[1].split('=')[1];
+      const token = getCookie('token');
       const response = await axiosCreate.post('/product/invoice', {
         token,
         amount: product.price * totalItem,
