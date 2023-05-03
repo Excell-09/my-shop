@@ -20,6 +20,8 @@ export default function Login() {
   const navigate = useNavigate();
   const [isPasswordShow, setIsPasswordShow] = useState<boolean>(false);
 
+  console.log('hosdofh')
+
   const setTokenToCookie = (token: string) => {
     const date = new Date();
     date.setTime(date.getTime() + 24 * 60 * 60 * 1000);

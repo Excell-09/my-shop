@@ -1,11 +1,11 @@
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
 import { useAppSelector } from '../store/hooks';
 import ProductCart from '../components/ProductCart';
 import { useUserState } from '../atom/userAtom';
 import { useErrorState } from '../atom/ErrorAtom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import axiosCreate from '../utils/axiosCreate';
 
 export default function Checkout() {
@@ -14,6 +14,11 @@ export default function Checkout() {
   const { user } = useUserState();
   const { setError } = useErrorState();
   const [loading, setLoading] = useState(false);
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
 
   const handleCheckout = async () => {
     if (loading) setLoading(false);
@@ -56,7 +61,7 @@ export default function Checkout() {
               </div>
             </>
           ) : (
-            <div className='grid grid-cols-12'>
+            <div className='grid md:grid-cols-12'>
               <div className=' md:col-span-9 md:mr-10'>
                 <p className='font-bold pb-1'>{cart.totalItem} Products in Cart</p>
                 <div className='border-t-[1px] border-t-gray-400 flex-1'>

@@ -52,7 +52,7 @@ export default function DetailProduct() {
       const token = getCookie[1].split('=')[1];
       const response = await axiosCreate.post('/product/invoice', {
         token,
-        amount: product.price,
+        amount: product.price * totalItem,
       });
       window.location.replace(response.data.invoiceURL);
     } catch (error) {

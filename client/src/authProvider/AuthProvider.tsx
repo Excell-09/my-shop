@@ -83,6 +83,10 @@ const AuthProvider = (props: props) => {
       setProducts(res);
       setLoading(false);
     });
+    //eslint-disable-next-line
+  }, []);
+
+  useEffect(() => {
     if (user?._id) {
       setProductIdWishlist(user.wishlistProduct);
     }
