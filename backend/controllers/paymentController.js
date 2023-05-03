@@ -32,7 +32,7 @@ const payment = async (req, res) => {
     amount: amount,
     shouldSendEmail: true,
     successRedirectURL: process.env.CLIENT_URL + '/payment/success',
-    failureRedirectURL: process.env.CLIENT_URL + '/payment/fail',
+    failureRedirectURL: process.env.CLIENT_URL + '/payment/failure',
   });
   const invoiceURL = await invoice.getInvoice({
     invoiceID: id,
