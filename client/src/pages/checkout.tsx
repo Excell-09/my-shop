@@ -7,6 +7,7 @@ import { useUserState } from '../atom/userAtom';
 import { useErrorState } from '../atom/ErrorAtom';
 import { useEffect, useState } from 'react';
 import axiosCreate from '../utils/axiosCreate';
+import getCookie from '../utils/getCookie';
 
 export default function Checkout() {
   const cart = useAppSelector((state) => state.cart);
@@ -29,8 +30,7 @@ export default function Checkout() {
     }
     setLoading(true);
     try {
-      const getCookie = document.cookie.split(';');
-      const token = getCookie[1].split('=')[1];
+      const token = getCookie('token');
       const response = await axiosCreate.post('/product/invoice', {
         token,
         amount: cart.totalPrice,

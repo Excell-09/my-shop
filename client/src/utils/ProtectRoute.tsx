@@ -1,8 +1,8 @@
 import { Navigate } from 'react-router-dom';
-import { useUserState } from '../atom/userAtom';
+import getCookie from './getCookie';
 
 export default function ProtectRoute({ children }: { children: JSX.Element }) {
-  const { user } = useUserState();
+  const token = getCookie('token');
 
-  return user ? <Navigate to={'/'} /> : children;
+  return token ? <Navigate to={'/'} /> : children;
 }
