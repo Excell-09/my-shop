@@ -28,12 +28,10 @@ export const logoutUser = () => {
   window.location.reload();
 };
 
-
-
 const AuthProvider = (props: props) => {
   const { setProducts } = useProductsState();
-  const setUser = useSetRecoilState(userState);
-  const [productIdWishlist, setProductIdWishlist] = useRecoilState(productIdWishlistState);
+  const [currentUser, setUser] = useRecoilState(userState);
+  const setProductIdWishlist = useSetRecoilState(productIdWishlistState);
   const { isLoading, setLoading } = useLoadingState();
 
   const getCurrentUserFromCookie = async () => {
@@ -74,11 +72,11 @@ const AuthProvider = (props: props) => {
   }, []);
 
   useEffect(() => {
-    if (user?._id) {
-      setProductIdWishlist(user.wishlistProduct);
+    if (currentUser) {
+      setProductIdWishlist(currentUser.wishlistProduct);
     }
     //eslint-disable-next-line
-  }, [productIdWishlist]);
+  }, [currentUser]);
 
   axiosCreate.interceptors.response.use(
     (response) => {

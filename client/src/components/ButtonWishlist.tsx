@@ -1,10 +1,11 @@
-import { useEffect } from 'react';
 import { HeartIcon as HeartIconSolid } from '@heroicons/react/24/solid';
 import { HeartIcon } from '@heroicons/react/24/outline';
 import { useUserState } from '../atom/userAtom';
 import axiosCreate from '../utils/axiosCreate';
 import { useRecoilState } from 'recoil';
 import productIdWishlistState from '../atom/productIdWishlist';
+import { useNavigate } from 'react-router-dom';
+import { useErrorState } from '../atom/ErrorAtom';
 
 type props = {
   _idProducts: string;
@@ -12,33 +13,32 @@ type props = {
 
 export default function ButtonWishlist({ _idProducts }: props) {
   const { user } = useUserState();
-  const [productId, setProductId] = useRecoilState(productIdWishlistState);
-
-  useEffect(() => {
-    if (user?._id) {
-      setProductId(user.wishlistProduct);
-    }
-    //eslint-disable-next-line
-  }, []);
+  const [productIdWishlist, setProductIdWishlist] = useRecoilState(productIdWishlistState);
+  const navigate = useNavigate();
+  const { setError } = useErrorState();
 
   const isLiked = (): boolean => {
-    return productId.includes(_idProducts);
+    return productIdWishlist.includes(_idProducts);
   };
 
   const handleDisLike = () => {
-    const currentProduct = [...productId];
-    const index = productId.indexOf(_idProducts);
+    const currentProduct = [...productIdWishlist];
+    const index = productIdWishlist.indexOf(_idProducts);
     currentProduct.splice(index, 1);
-    setProductId(currentProduct);
+    setProductIdWishlist(currentProduct);
   };
 
   const handleLike = () => {
-    setProductId((id) => [...id, _idProducts]);
+    setProductIdWishlist((id) => [...id, _idProducts]);
+    console.log(productIdWishlist);
   };
 
-
   const handleRequestLike = async () => {
-    if (!user?._id) return;
+    if (!user?._id) {
+      navigate('/login');
+      setError({ type: 'error', message: 'you need login if you want add wishlist product' });
+      return;
+    }
     try {
       if (isLiked()) {
         handleDisLike();

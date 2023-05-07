@@ -2,48 +2,36 @@ import React, { useEffect } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { Product } from '../../typing';
-import axiosCreate from '../utils/axiosCreate';
 import { useUserState } from '../atom/userAtom';
-import Loading from '../components/Loading';
 import ProductCard from '../components/ProductCard';
 import { useLocation } from 'react-router-dom';
-
-type Callback = (data: Product[]) => void;
+import { useProductsState } from '../atom/productsAtom';
+import productIdWishlistState from '../atom/productIdWishlist';
+import { useRecoilState } from 'recoil';
 
 export default function Wishlist() {
+  const { products } = useProductsState();
   const { pathname } = useLocation();
   const [wishlistProducts, setWishlistProducts] = React.useState<Product[]>([]);
-  const [loading, setLoading] = React.useState<boolean>(false);
+  const [productIdWishlist] = useRecoilState(productIdWishlistState);
   const { user } = useUserState();
 
-  const getWishlistProducts = async (userId: string, fn: Callback) => {
-    if (loading) setLoading(false);
-    setLoading(true);
-    try {
-      const response = await axiosCreate<Product[] | string>(`/product/wishlist/${userId}`);
-      if (typeof response.data === 'string') {
-        fn([]);
-        return;
+  useEffect(() => {
+    const productsResult = [];
+    if (user && products.length !== 0 && productIdWishlist.length !== 0) {
+      for (const id of productIdWishlist) {
+        const result = products.find((item) => item._id === id);
+        if (!result) break;
+        productsResult.push(result);
       }
-      fn(response.data);
-    } catch (error) {
-      fn([]);
     }
-  };
+    setWishlistProducts(productsResult);
+    //eslint-disable-next-line
+  }, [user, products, productIdWishlist]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
-
-  useEffect(() => {
-    if (user?._id) {
-      getWishlistProducts(user?._id, (products) => {
-        setWishlistProducts(products);
-        setLoading(false);
-      });
-    }
-    //eslint-disable-next-line
-  }, [user?._id]);
 
   return (
     <>
@@ -55,10 +43,10 @@ export default function Wishlist() {
           </h3>
           {user === null ? (
             <h3 className='text-red-500 text-center'>Need login!</h3>
-          ) : loading ? (
-            <Loading />
           ) : wishlistProducts.length === 0 ? (
-            <h3 className='text-indigo-500 font-semibold text-center'>No Wishlist Products!</h3>
+            <h6 className='text-indigo-500 font-semibold text-center'>
+              You Don't have any products wishlist
+            </h6>
           ) : (
             <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3'>
               {wishlistProducts.map((item) => (

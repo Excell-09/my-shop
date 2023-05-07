@@ -77,7 +77,7 @@ export default function Login() {
             type='email'
             required
             placeholder='Enter Your Email'
-            className='input bg-gray-100 rounded-sm'
+            className='input bg-gray-100 rounded-sm mt-3'
           />
           <div className='relative'>
             <input
