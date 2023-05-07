@@ -9,25 +9,6 @@ const getProducts = async (req, res) => {
   res.status(StatusCodes.OK).json(result);
 };
 
-const getProductsWishlist = async (req, res) => {
-  const userId = req.params.id;
-  const user = await User.findById(userId);
-
-  if (!user) {
-    throw new UnAuthenticatedError('Invalid User');
-  }
-
-  const productsId = user.wishlistProduct.map((product) => product);
-
-  if (productsId.length === 0) {
-    res.status(StatusCodes.OK).json("You Don't have any product in your wishlist");
-    return;
-  }
-
-  const products = await ProductModels.find({ _id: { $in: productsId } });
-  res.status(StatusCodes.OK).json(products);
-};
-
 const setProductsWishlist = async (req, res) => {
   const userId = req.params.id;
   const { id: productId } = req.body;
@@ -60,4 +41,4 @@ const setProductsWishlist = async (req, res) => {
   res.status(StatusCodes.CREATED).json('Wishlist updated!');
 };
 
-export { getProducts, getProductsWishlist, setProductsWishlist };
+export { getProducts, setProductsWishlist };
